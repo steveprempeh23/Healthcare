@@ -1,0 +1,14 @@
+{
+  "household_file": "data/raw/<your_household_file>.dta",
+  "health_file": "data/raw/<your_health_file>.dta",
+  "consumption_file": "data/raw/<your_consumption_file>.dta",
+  "columns": {
+    "hh_id": "COLUMN NAME for household id (must match across all 3 files)",
+    "weight": "COLUMN NAME for sample weight",
+    "region": "COLUMN NAME for region",
+    "age": "OPTIONAL: COLUMN NAME for age -- omit or leave blank to skip age breakdown",
+    "oop_components": ["LIST", "of health spending COLUMN NAMES to sum"],
+    "total_consumption": "COLUMN NAME for total household consumption/income"
+  },
+  "che_thresholds": [0.10, 0.20, 0.25]
+}

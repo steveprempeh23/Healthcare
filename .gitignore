@@ -1,0 +1,33 @@
+# ---- Restricted / large survey data: NEVER commit these ----
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+*.dta
+*.sav
+*.sav.gz
+
+# ---- Generated outputs (reproducible from code, don't bloat the repo) ----
+results/*
+!results/.gitkeep
+figures/*
+!figures/.gitkeep
+*.csv
+!config/*.csv
+scan_report.csv
+config_auto.json
+tornado_chart.png
+
+# ---- Python ----
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.ipynb_checkpoints/
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
