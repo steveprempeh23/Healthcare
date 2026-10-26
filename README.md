@@ -4,6 +4,27 @@ This repository reproduces the data extraction, simulation, and sensitivity
 analyses behind the manuscript *Healthcare Affordability Burden Study:
 Ghana's Generation Z* (Prempeh, N. O. A., 2026).
 
+## Key results
+
+A 10,000-household Monte Carlo simulation (2026–2051, extended to 2061)
+projects out-of-pocket (OOP) healthcare burden as a share of income under
+three scenarios:
+
+| Scenario      | Mean OOP burden, 2051 | Mean OOP burden, 2061 |
+|---------------|:---------------------:|:---------------------:|
+| Reform        | 5.7%                  | 7.1%                  |
+| Status quo    | 19.6%                 | 26.7%                 |
+| Shock-heavy   | 64.7%                 | 99.3%                 |
+
+**This ordering (reform < status quo < shock-heavy) holds under both the
+original SSA-literature-blended hazard assumption and a GLSS7-empirical
+recalibration** — the empirical calibration lowers absolute magnitudes
+(status-quo 2051 burden: 19.6% → 15.6%, a 1.3x difference) but does not
+change which policy direction is better or worse. A global probabilistic
+sensitivity analysis (300 joint parameter draws) finds the household
+out-of-pocket cost share and shock-year probability are the two parameters
+the result is most sensitive to (Spearman ρ = 0.65 and 0.49 respectively).
+
 ## Repository layout
 
 ```
@@ -32,7 +53,8 @@ Ghana's Generation Z* (Prempeh, N. O. A., 2026).
 │   ├── raw/                      # YOU place GLSS7/AHIES .dta/.sav files here — NEVER committed
 │   └── processed/                # intermediate outputs — NEVER committed
 └── docs/
-    └── SSRN_submission_draft.md
+    ├── SSRN_submission_draft.md
+    └── healthcare_affordability_gap_genz_ghana_revised.pdf
 ```
 
 ## Why the data isn't in this repo
@@ -46,8 +68,8 @@ GSS and place it under `data/raw/`.
 ## One-time setup
 
 ```bash
-git clone <your-new-repo-url>.git
-cd <your-new-repo-name>
+git clone https://github.com/steveprempeh23/Healthcare.git
+cd Healthcare
 python3 -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
@@ -81,7 +103,7 @@ python3 src/extraction/ghana_survey_toolkit.py analyze --config config/config.js
 ## Step 2 — Core simulation (no raw data needed — parameters are hardcoded/calibrated)
 
 ```bash
-export RESULTS_DIR=results          # see note below on removing the hardcoded path
+export RESULTS_DIR=results
 python3 src/simulation/simulation.py
 python3 src/simulation/extended_simulation.py
 ```
@@ -109,12 +131,22 @@ make all
 - `N_YEARS=26` spans 2026–2051 inclusive (25-year horizon from a 2026 start).
   An earlier draft used `N_YEARS=25`, which under-counted by one year — see
   the note in `simulation.py`.
+- The full pipeline (`simulation.py` → `extended_simulation.py` →
+  `sensitivity_analysis.py` → `requirements_5_6_analysis.py` →
+  `reconciliation_analysis.py`) has been verified to run end-to-end on a
+  clean clone with no manual intervention beyond `pip install -r
+  requirements.txt`.
 
 ## Status
 
 - [x] Manuscript drafted and submitted (Springer journal, under review)
 - [x] Simulation, sensitivity, and reconciliation code in this repo
-- [ ] Extraction toolkit tested against a fresh GLSS7/AHIES pull end-to-end
+- [x] Full simulation pipeline verified on a clean clone (no local-path
+      dependencies)
+- [x] Extraction toolkit's `scan` command verified against real
+      GLSS7/AHIES files (3 files scanned, 0 read failures)
+- [ ] Extraction toolkit's `auto`/`analyze` commands verified end-to-end
+      against real data
 - [ ] Preprint posted (SSRN)
 
 ## Citation
